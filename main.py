@@ -4,12 +4,11 @@ import pyautogui
 from pynput import keyboard
 from screen_cap import WindowCapture
 
-# TODO make opencv part run on GPU
 class TerrariaCV:
 
     def __init__(self):
         self.auto_mouse_follow = False
-        self.threshold = 0.85
+        self.threshold = 0.8
         self.found = False
 
         self.matching_attempts = 0
@@ -20,6 +19,7 @@ class TerrariaCV:
 
     def begin(self):
 
+        # needle image set to a simple torch for testing purposes
         needle_img = cv.imread('torch.png', cv.IMREAD_UNCHANGED)
         window_cap = WindowCapture()
 
@@ -52,19 +52,21 @@ class TerrariaCV:
                 break
             cv.waitKey(1)
 
-        print("finsihed!")
+        print("finished!")
 
+    # toggle whether or not the user's cursor automatically jumps to the target image on their screen
     def toggle_auto_mouse_follow(self):
         if self.auto_mouse_follow:
             self.auto_mouse_follow = False
         else:
             self.auto_mouse_follow = True
 
+    # active the cursor to automatically jump to target image on user's screen
     def on_press(self, key):
         try:
             print('alphanumeric key {0} pressed'.format(
                 key.char))
-            if key.char == 'f':
+            if key.char == 'r':
                 self.toggle_auto_mouse_follow()
                 print("auto mouse follow is " + str(self.auto_mouse_follow))
         except AttributeError:
@@ -85,12 +87,11 @@ class TerrariaCV:
             on_release=self.on_release)
         listener.start()
 
+    # find the needle image in the haystack image, draw a bounding box around it
     def find_image(self, needle_img, haystack_img, scale=1.0):
 
         new_height = (int)(needle_img.shape[0] * scale)
         new_width = (int)(needle_img.shape[1] * scale)
-        #print("Haystack img shape: " + str(haystack_img.shape[0]) + ", " + str(haystack_img.shape[1]))
-        #print("Needle img shape: " + str(needle_img.shape[0]) + ", " + str(needle_img.shape[0]))
         resized_needle_img = cv.resize(needle_img, dsize=(new_width, new_height), interpolation=cv.INTER_CUBIC)
         result = cv.matchTemplate(haystack_img, resized_needle_img, cv.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
