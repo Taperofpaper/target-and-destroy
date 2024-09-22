@@ -2,12 +2,7 @@
 # "OpenCV in Python Tutorial : Fast Window Capture - OpenCV Object Detection in Games #4"
 # https://www.youtube.com/watch?v=WymCpVUPWQ4
 
-import os
-from time import time
-import cv2 as cv
 import numpy as np
-import pyautogui
-from PIL import ImageGrab
 import win32gui, win32ui, win32con
 
 class WindowCapture:
