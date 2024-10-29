@@ -1,5 +1,7 @@
 ﻿# OpenCV Aimbot 🤖
 
+<p align="center"><img width="80%" src="terraria-aimbot.png"/></p>
+
 Made for the video game Terraria (because I like Terraria (and I'm bad at aiming))
 
 # Instructions
